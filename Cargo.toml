@@ -5,7 +5,7 @@ authors = ["Kevin Robert Stravers <kstraver@cisco.com>"]
 license = "GPL-3.0"
 readme = "README.md"
 keywords = ["iterator", "interleave"]
-documentation = "interleave.stravers.net/interleave"
+documentation = "http://interleave.stravers.net/interleave"
 repository = "https://github.com/BourgondAries/interleave-rs"
 description = """
 An arbitrary iterator interleaver for exhaustive consumption of iterators. Each iterator is guaranteed to be no more than a single next call behind any other iterator.
