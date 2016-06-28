@@ -1,13 +1,14 @@
 //! This crate allows you to create an arbitrary interleaving
 //! iterator. Each iterator is guaranteed to be behind the
 //! most advanced iterator by at max one next() call.
+//! The interleave macro is of arbitrary arity.
 //!
 //! ```
 //! #[macro_use]
 //! extern crate interleave;
 //! fn main() {
 //! 	use interleave::{IterList, MultiIter};
-//! 	let iter = interleave!(i32; (1..5), (9..12));
+//! 	let iter = interleave!(i32; (1..5), (9..12), (-3..2);
 //! 	for i in iter {
 //! 		println!("{:?}", i);
 //! 	}
