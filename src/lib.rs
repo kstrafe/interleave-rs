@@ -1,6 +1,7 @@
 #[allow(dead_code)]
 
-pub type IterList<T> = Vec<Box<Iterator<Item = T>>>;
+pub type Iter<T> = Box<Iterator<Item = T>>;
+pub type IterList<T> = Vec<Iter<T>>;
 
 pub struct MultiIter<T> {
 	empty: bool,
@@ -15,6 +16,10 @@ impl<T> MultiIter<T> {
 			index: 0,
 			items: items,
 		}
+	}
+
+	pub fn push(&mut self, item: Iter<T>) {
+		self.items.push(item);
 	}
 }
 
@@ -44,8 +49,9 @@ impl<T> Iterator for MultiIter<T> {
 
 #[macro_export]
 macro_rules! interleave {
-	($t:ty; $($e:expr),*,) => ( interleave!($t; $($e),*) );
-	($t:ty; $($e:expr),*) => ({
+	($t:ty) => ( MultiIter::new(IterList::<$t>::new()) );
+	($t:ty; $($e:expr),+,) => ( interleave!($t; $($e),*) );
+	($t:ty; $($e:expr),+) => ({
 		let mut temporary: IterList<$t> = vec![];
 		$(
 			temporary.push(Box::new($e));
