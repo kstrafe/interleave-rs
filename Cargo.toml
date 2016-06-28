@@ -12,7 +12,7 @@ An arbitrary iterator interleaver for exhaustive consumption of iterators. Each 
 """
 
 [dependencies]
-clippy = { version = "*", optional = true }
+clippy = { version = "0.0.77", optional = true }
 
 [features]
 default = []
