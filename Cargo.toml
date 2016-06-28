@@ -1,0 +1,6 @@
+[package]
+name = "interleave"
+version = "0.1.0"
+authors = ["Kevin Robert Stravers <kstraver@cisco.com>"]
+
+[dependencies]
