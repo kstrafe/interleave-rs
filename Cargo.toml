@@ -12,3 +12,8 @@ An arbitrary iterator interleaver for exhaustive consumption of iterators. Each 
 """
 
 [dependencies]
+clippy = { version = "*", optional = true }
+
+[features]
+default = []
+dev = ["clippy"]

@@ -1,3 +1,6 @@
+#![cfg_attr(feature = "dev", allow(unstable_features))]
+#![cfg_attr(feature = "dev", feature(plugin))]
+#![cfg_attr(feature = "dev", plugin(clippy))]
 //! This crate allows you to create an arbitrary interleaving
 //! iterator. Each iterator is guaranteed to be behind the
 //! most advanced iterator by at max one next() call.
@@ -18,7 +21,6 @@
 //! Most information can be found in the examples or the test module.
 //!
 #[allow(dead_code)]
-
 pub type Iter<T> = Box<Iterator<Item = T>>;
 
 /// Vector of boxed iterator traits
