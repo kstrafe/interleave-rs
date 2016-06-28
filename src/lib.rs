@@ -1,8 +1,29 @@
+//! This crate allows you to create an arbitrary interleaving
+//! iterator. Each iterator is guaranteed to be behind the
+//! most advanced iterator by at max one next() call.
+//!
+//! ```
+//! #[macro_use]
+//! extern crate interleave;
+//! fn main() {
+//! 	use interleave::{IterList, MultiIter};
+//! 	let iter = interleave!(i32; (1..5), (9..12));
+//! 	for i in iter {
+//! 		println!("{:?}", i);
+//! 	}
+//! }
+//! ```
+//!
+//! Most information can be found in the examples or the test module.
+//!
 #[allow(dead_code)]
 
 pub type Iter<T> = Box<Iterator<Item = T>>;
+
+/// Vector of boxed iterator traits
 pub type IterList<T> = Vec<Iter<T>>;
 
+/// Holds the state of the interleave iterator
 pub struct MultiIter<T> {
 	empty: bool,
 	index: usize,
@@ -18,6 +39,10 @@ impl<T> MultiIter<T> {
 		}
 	}
 
+	/// Add a new iterator to stack of iterables.
+	///
+	/// Should only be used when setting up, does not
+	/// reset when the other iterators have been exhausted.
 	pub fn push(&mut self, item: Iter<T>) {
 		self.items.push(item);
 	}
@@ -47,6 +72,7 @@ impl<T> Iterator for MultiIter<T> {
 	}
 }
 
+/// Main macro for creating a MultiIter
 #[macro_export]
 macro_rules! interleave {
 	($t:ty) => ( MultiIter::new(IterList::<$t>::new()) );
