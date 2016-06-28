@@ -51,6 +51,16 @@ impl<T> MultiIter<T> {
 	}
 }
 
+impl<T> Default for MultiIter<T> {
+	fn default() -> MultiIter<T> {
+		MultiIter {
+			empty: false,
+			index: 0,
+			items: vec![],
+		}
+	}
+}
+
 impl<T> Iterator for MultiIter<T> {
 	type Item = T;
 	fn next(&mut self) -> Option<Self::Item> {
@@ -78,7 +88,7 @@ impl<T> Iterator for MultiIter<T> {
 /// Main macro for creating a MultiIter
 #[macro_export]
 macro_rules! interleave {
-	($t:ty) => ( MultiIter::new(IterList::<$t>::new()) );
+	($t:ty) => ( MultiIter::new(IterList::<$t>::default()) );
 	($t:ty; $($e:expr),+,) => ( interleave!($t; $($e),*) );
 	($t:ty; $($e:expr),+) => ({
 		let mut temporary: IterList<$t> = vec![];
