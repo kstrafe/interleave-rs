@@ -133,7 +133,7 @@ mod tests {
 
 	#[test]
 	fn di_iter() {
-		let mut iter = interleave!(i32; 0..10, 5..15);
+		let mut iter = interleave!(i64; 0..10, 5..15);
 		assert_eq!(iter.next(), Some(0));
 		assert_eq!(iter.next(), Some(5));
 		assert_eq!(iter.next(), Some(1));
@@ -142,7 +142,7 @@ mod tests {
 
 	#[test]
 	fn di_iter_infer() {
-		let mut iter = interleave!(0..10, 5..15);
+		let mut iter = interleave!(0i64..10, 5..15);
 		assert_eq!(iter.next(), Some(0));
 		assert_eq!(iter.next(), Some(5));
 		assert_eq!(iter.next(), Some(1));
