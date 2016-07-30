@@ -88,7 +88,16 @@ impl<T> Iterator for MultiIter<T> {
 /// Main macro for creating a MultiIter
 #[macro_export]
 macro_rules! interleave {
-	($t:ty) => ( MultiIter::new(IterList::<$t>::default()) );
+	($($e:expr),+,) => ({ interleave!($($e),*) });
+	($($e:expr),+) => ({
+		let mut temporary: IterList<_> = vec![];
+		$(
+			temporary.push(Box::new($e));
+		);*
+		MultiIter::new(temporary)
+	});
+	() => ( MultiIter::new(IterList::<_>::default()) );
+	($t:ty;) => ( MultiIter::new(IterList::<$t>::default()) );
 	($t:ty; $($e:expr),+,) => ( interleave!($t; $($e),*) );
 	($t:ty; $($e:expr),+) => ({
 		let mut temporary: IterList<$t> = vec![];
@@ -110,14 +119,30 @@ mod tests {
 
 	#[test]
 	fn simple() {
-		let mut iter = interleave!(i32; (0..10));
+		let mut iter = interleave!(i32; 0..10);
+		assert_eq!(iter.next(), Some(0));
+		assert_eq!(iter.next(), Some(1));
+	}
+
+	#[test]
+	fn simple_infer() {
+		let mut iter = interleave!(0..10);
 		assert_eq!(iter.next(), Some(0));
 		assert_eq!(iter.next(), Some(1));
 	}
 
 	#[test]
 	fn di_iter() {
-		let mut iter = interleave!(i32; (0..10), (5..15));
+		let mut iter = interleave!(i32; 0..10, 5..15);
+		assert_eq!(iter.next(), Some(0));
+		assert_eq!(iter.next(), Some(5));
+		assert_eq!(iter.next(), Some(1));
+		assert_eq!(iter.next(), Some(6));
+	}
+
+	#[test]
+	fn di_iter_infer() {
+		let mut iter = interleave!(0..10, 5..15);
 		assert_eq!(iter.next(), Some(0));
 		assert_eq!(iter.next(), Some(5));
 		assert_eq!(iter.next(), Some(1));
@@ -126,13 +151,13 @@ mod tests {
 
 	#[test]
 	fn tri_iter() {
-		let mut iter = interleave!(i32; (0..), (0..), (0..));
+		let mut iter = interleave!(0.., 0.., 0..);
 		next!(iter; 0, 0, 0, 1, 1, 1, 2, 2, 2);
 	}
 
 	#[test]
 	fn quad_iter() {
-		let mut iter = interleave!{(i32, i32);
+		let mut iter = interleave!{
 			(0..3).map(|x| (0, x)),
 			(0..3).map(|x| (x, 0)),
 		};
@@ -151,8 +176,8 @@ mod tests {
 		fn check(mut iter: MultiIter<i32>) {
 			next!(iter; 0,0,0,0, 1,1,1,1, 2,2,2, 3,3,3, 4,4,4, 5,5, 6,6, 7, 8, 9);
 		}
-		check(interleave!(i32; (0..10), (0..5), (0..2), (0..7)));
-		check(interleave!(i32; (0..5), (0..2), (0..7), (0..10)));
-		check(interleave!(i32; (0..5), (0..7), (0..2), (0..10)));
+		check(interleave!((0..10), (0..5), (0..2), (0..7)));
+		check(interleave!((0..5), (0..2), (0..7), (0..10)));
+		check(interleave!((0..5), (0..7), (0..2), (0..10)));
 	}
 }

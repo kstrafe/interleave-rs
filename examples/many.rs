@@ -11,7 +11,7 @@ fn main() {
 		195, 54, 238, 42, 56, 159, 84, 4, 326, 12, 74, 9, 144, 305, 300, 205, 123, 311, 302, 65, 99, 230, 284, 273, 99,
 		285, 292, 108, 180, 88,
 	];
-	let mut total = interleave!(i32);
+	let mut total = interleave!();
 	for i in counters.windows(2) {
 		total.push(Box::new((-i[0]..i[1])));
 	}
