@@ -11,7 +11,21 @@
 //! extern crate interleave;
 //! fn main() {
 //! 	use interleave::{IterList, MultiIter};
-//! 	let iter = interleave!(i32; (1..5), (9..12), (-3..2));
+//! 	let iter = interleave!(1..5, 9..12, -3..2);
+//! 	for i in iter {
+//! 		println!("{:?}", i);
+//! 	}
+//! }
+//! ```
+//!
+//! The types returned by the iterator can also be forced:
+//!
+//! ```
+//! #[macro_use]
+//! extern crate interleave;
+//! fn main() {
+//! 	use interleave::{IterList, MultiIter};
+//! 	let iter = interleave!(i8; 1..5, 9..12, -3..2);
 //! 	for i in iter {
 //! 		println!("{:?}", i);
 //! 	}

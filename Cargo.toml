@@ -1,6 +1,6 @@
 [package]
 name = "interleave"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Kevin Robert Stravers <kstraver@cisco.com>"]
 license = "GPL-3.0"
 readme = "README.md"
